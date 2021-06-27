@@ -1,0 +1,53 @@
+CREATE DATABASE "Hometask4"
+    WITH 
+    OWNER = test_user
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+
+CREATE TABLE IF NOT EXISTS Singers (
+	id SERIAL PRIMARY KEY,
+	Singer_name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Genres (
+	id SERIAL PRIMARY KEY,
+	Genre_name VARCHAR(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS GenreSinger (
+	Genre_id INTEGER REFERENCES Genres(id),
+	Singer_id INTEGER REFERENCES Singers(id),
+	CONSTRAINT GenreSinger_PK PRIMARY KEY (Genre_id, Singer_id)
+);
+
+CREATE TABLE IF NOT EXISTS Albums (
+	id SERIAL PRIMARY KEY,
+	Album_name VARCHAR(30) NOT NULL UNIQUE,
+	Release_date INTEGER NOT NULL
+); 
+
+CREATE TABLE IF NOT EXISTS AlbumSinger (
+	Album_id INTEGER REFERENCES Albums(id),
+	Singer_id INTEGER REFERENCES Singers(id),
+	CONSTRAINT AlbumSinger_PK PRIMARY KEY (Album_id, Singer_id)
+);
+
+CREATE TABLE IF NOT EXISTS Tracks (
+	id SERIAL PRIMARY KEY,
+	Track_name VARCHAR(30) NOT NULL,	
+	Track_duration INTEGER NOT NULL,
+	Album_id INTEGER REFERENCES Albums(Id) NOT NULL
+); 
+
+CREATE TABLE IF NOT EXISTS Collection (
+	id SERIAL PRIMARY KEY,
+	Collection_name VARCHAR(30) NOT NULL,	
+	Release_year INTEGER NOT NULL
+); 
+
+CREATE TABLE IF NOT EXISTS CollectionTracks (
+	Track_id INTEGER REFERENCES Tracks(id),
+	Collection_id INTEGER REFERENCES Collection(id),
+	CONSTRAINT CollectionTracks_PK PRIMARY KEY (Track_id, Collection_id)
+);
+
